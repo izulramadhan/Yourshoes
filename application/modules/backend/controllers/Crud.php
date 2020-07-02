@@ -30,15 +30,20 @@ class Crud extends MY_Controller{
 		$product_desc 	= $this->input->post('product_desc');
 		$category 		= $this->input->post('category');
 		$stok 			= $this->input->post('stok');
-		$foto = $this->upload->data("file_name");
+		$foto 			= $this->upload->data("file_name");
+		if ($foto==null) {
+			$image="default.jpg";
+		}else{
+			$image=$foto;
+		}
 		$data = array(
-			'nama_produk' => $product_name,
-			'deskripsi' => $product_desc,
-			'harga' => $product_price,
-			'gambar' => $foto,
-			'kategori' => $category,
-			'stok' => $stok
-			);
+				'nama_produk' => $product_name,
+				'deskripsi' => $product_desc,
+				'harga' => $product_price,
+				'gambar' => $image,
+				'kategori' => $category,
+				'stok' => $stok
+				);
 		$this->M_data->input_data($data,'tbl_produk');
  		$this->session->set_flashdata('message', 'Data berhasil ditambahkan');
 		redirect('backend/Page/product');
@@ -82,11 +87,17 @@ class Crud extends MY_Controller{
 	$gam	= $this->upload->data("file_name");
 	$kat	= $this->input->post('kategori');
 	$stok	= $this->input->post('stok');
+	$img  	= $this->input->post('img');
+	if ($gam==null) {
+			$image=$img;
+		}else{
+			$image=$gam;
+		}
 	$data = array(
 		'nama_produk' => $nama,
 		'deskripsi' => $desk,
 		'harga' => $har,
-		'gambar' => $gam,
+		'gambar' => $image,
 		'kategori' => $kat,
 		'stok' => $stok
 	);
@@ -126,13 +137,6 @@ class Crud extends MY_Controller{
 		$data['id_order'] = $id;
       	$this->render_backend('page/v_detail_order', $data);
 	}
-	function detailService($id){
-        $data['judul']="Detail Service";
-		$where = array('id' => $id);
-		$data['user'] = $this->M_data->detail_service($where);
-		$data['id_order'] = $id;
-    	$this->render_backend('page/v_detail_service', $data);
-	}
 	function replyService($id){
         $data['judul']="Balas Service";
 		$where = array('id' => $id);
@@ -141,9 +145,10 @@ class Crud extends MY_Controller{
     	$this->render_backend('page/v_reply_service', $data);
 	}
 	function balasService(){
-		 $id = $this->input->post('id');
+		 $id 	= $this->input->post('id');
 		 $pesan = $this->input->post('pesan');
 		 $reply = $this->input->post('reply');
+		 $email = $this->input->post('email');
 		 // Konfigurasi email
 		 $config = [
 		 'mailtype' => 'html',
@@ -161,7 +166,7 @@ class Crud extends MY_Controller{
 		 // Email dan nama pengirim
 		 $this->email->from('no-reply@yourshoes.com', 'yourshoes.com | YourShoes');
 		 // Email penerima
-		 $this->email->to('bachtiarnuryogipratama@gmail.com'); // Ganti dengan email tujuan kamu
+		 $this->email->to($email); // Ganti dengan email tujuan kamu
 		 // Lampiran email, isi dengan url/path file
 		 $this->email->attach('File.png');
 		 // Subject email

@@ -36,6 +36,9 @@
                                 <input type="hidden" class="form-control" name="id" value="<?php echo $u->id; ?>"/>
                               </div>
                               <div class="form-group">
+                                <input type="hidden" class="form-control" name="email" value="<?php echo $u->email; ?>"/>
+                              </div>
+                              <div class="form-group">
                                 <label for="exampleInputEmail1">Nama Customer : </label>
                                 <input type="text" class="form-control primary" name="nama" placeholder="<?php echo $u->nama; ?>" readonly>
                               </div>

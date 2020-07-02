@@ -98,12 +98,50 @@ class Shopping extends CI_Controller {
 	{
 		//-------------------------Input data pelanggan--------------------------
 		$data_pelanggan = array('nama' => $this->input->post('nama'),
+							'email' => $this->input->post('email'),
 							'alamat' => $this->input->post('alamat'),
 							'telp' => $this->input->post('telp'),
 							'pengiriman' => $this->input->post('pengiriman'),
 							'pesan' => $this->input->post('pesan'),
 							'pembayaran' => $this->input->post('pembayaran'));					
 		$id_pelanggan = $this->keranjang_model->tambah_pelanggan($data_pelanggan);
+		//--------------------------kirim email----------------------------------
+		$config = [
+            'mailtype'  => 'html',
+            'charset'   => 'utf-8',
+            'protocol'  => 'smtp',
+            'smtp_host' => 'smtp.gmail.com',
+            'smtp_user' => 'izul.purnama1012@gmail.com',  // Email gmail
+            'smtp_pass'   => 'meymey10',  // Password gmail
+            'smtp_crypto' => 'ssl',
+            'smtp_port'   => 465,
+            'crlf'    => "\r\n",
+            'newline' => "\r\n"
+        ];
+         // Load library email dan konfigurasinya
+        $this->load->library('email', $config);
+
+        // Email dan nama pengirim
+        $this->email->from('no-reply@yourshoes.com', 'yourshoes.com');
+
+        // Email penerima
+        $this->email->to($this->input->post('email')); // Ganti dengan email tujuan
+
+        // Lampiran email, isi dengan url/path file
+        $this->email->attach('File.png');
+
+        // Subject email
+        $this->email->subject('[YourSHOES] - Transaksi Pemesanan Berhasil');
+
+        // Isi email
+        $this->email->message("Hallo Tn/Ny <p> Pesanan Anda telah kami verifikasi <p> Terimakasih telah berbelanja di Yourshoes <p> Pesanan Anda sedang disiapkan, Silahkan melakukan pembayaran untuk segera kami kirim <p> Bravo~");
+
+        // Tampilkan pesan sukses atau error
+        if ($this->email->send()) {
+            echo 'Sukses! email berhasil dikirim.';
+        } else {
+            echo 'Error! email tidak dapat dikirim.';
+        }
 		//-------------------------Input data order------------------------------
 		$data_order = array('tanggal' => date('Y-m-d'),
 					   		'pelanggan' => $id_pelanggan);
@@ -125,6 +163,15 @@ class Shopping extends CI_Controller {
 		$data['kategori'] = $this->keranjang_model->get_kategori_all();
 		$this->load->view('themes/header',$data);
 		$this->load->view('shopping/sukses',$data);
+		$this->load->view('themes/footer');
+	}
+	public function search()
+	{
+		$keyword    =   $this->input->post('keyword');
+        $data['results']    =   $this->keranjang_model->get_product_keyword($keyword);
+		$data['kategori'] = $this->keranjang_model->get_kategori_all();
+		$this->load->view('themes/header',$data);
+		$this->load->view('shopping/search',$data);
 		$this->load->view('themes/footer');
 	}
 

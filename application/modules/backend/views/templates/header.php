@@ -21,7 +21,7 @@
     <!-- Favicon-->
     <link rel="shortcut icon" href="<?php echo base_url('gambar/logo.png')?>">
     <!-- Datatable CSS -->
-    <link href="<?php echo base_url('assets/datatables/css/jquery.custom.css')?>" rel='stylesheet' type='text/css'>
+    <link href="<?php echo base_url('assets/datatables/css/jquery.custom2.css')?>" rel='stylesheet' type='text/css'>
     <!-- jQuery Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Datatable JS -->
@@ -30,6 +30,8 @@
       // Cek apakah terdapat session nama message
       if($this->session->flashdata('message')){ // Jika ada
        echo '<div class="alert alert-success no-margin-bottom">'.$this->session->flashdata('message').'</div>'; // Tampilkan pesannya
+      }if($this->session->flashdata('sukses')){ // Jika ada
+       echo '<div class="alert alert-success no-margin-bottom" role="alert"><h4 class="alert-heading">'.$this->session->flashdata('sukses').'</h4><p>Selemat Datang</p></div>'; // Tampilkan pesannya
       }if($this->session->flashdata('hapus')){ // Jika ada
        echo '<div class="alert alert-danger no-margin-bottom">'.$this->session->flashdata('hapus').'</div>'; // Tampilkan pesannya
       }

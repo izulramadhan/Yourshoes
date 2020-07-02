@@ -4,7 +4,7 @@ class Auth extends MY_Controller {
  public function __construct(){
  parent::__construct();
  $this->load->library(array('form_validation'));
- $this->load->helper(array('url','form'));
+ $this->load->helper(array('url','form','cookie'));
  $this->load->model('UserModel');
  $this->load->model('M_register');
  }
@@ -29,7 +29,12 @@ class Auth extends MY_Controller {
  'nama'=>$user->nama, // Buat session nama
  'role'=>$user->role // Buat session role
  );
+ //remeber me
+ if($this->input->post('remember')){
+ 	setcookie('authenticated','true', time() + 2628002);
+ }
  $this->session->set_userdata($session); // Buat session sesuai $session
+ $this->session->set_flashdata('sukses', 'Welcome :)');
  redirect('backend/Page/home'); // Redirect ke halaman home
  }else{
  $this->session->set_flashdata('message', 'Password salah'); // Buat session flashdata

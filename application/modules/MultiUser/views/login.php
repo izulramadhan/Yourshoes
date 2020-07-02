@@ -35,11 +35,9 @@ if($this->session->flashdata('success')){ // Jika ada
                       <input id="login-password" type="password" required data-msg="Tolong masukan password" class="input-material" name="password">
                       <label for="login-password" class="label-material" name="password">Password</label>
                     </div>
-                      <div class="icheck-primary">
-                              <input type="checkbox" id="remember">
-                              <label for="remember" class="text-white">
-                                Remember Me
-                              </label>
+                      <div class="i-check">
+                              <input class="checkbox-template" type="checkbox" name="remember" id="remember">
+                              <label for="remember">Remember Me</label>
                             </div>
                             <br>
                     <button type="submit" class="btn btn-primary" value="login">Login</button>

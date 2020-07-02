@@ -21,24 +21,21 @@
                       <div class="card card-primary">
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                          <table id="idTable" class="table table-responsive table-striped text-nowrap border-primary">
+                          <table id="idTable" class="table-dataTable-compact table-responsive table-striped text-nowrap border-primary">
                             <thead class="text-white" style="font-size: 15px;">
                               <tr>
+                                <th></th>
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Email</th>
-                                <th>Alamat</th>
-                                <th>Telp</th>
-                                <th>Pengiriman</th>
-                                <th>Pembayaran</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
                                 <th>Option</th>
-                                <th>Id</th>
+                                <th></th>
                               </tr>
                             </thead>
                             <tbody class="text-white" style="font-size: 14px;">
-                              <tr>
+                              <tr class="mt-4">
                               </tr>
                             </tbody>
                           </table>
@@ -55,40 +52,86 @@
         </div>
 <!-- Script -->
   <script type="text/javascript">
+    function format ( d ) {
+    return 'Alamat: '+d.alamat+'<br><br>'+
+        'Telepon: '+d.telp+'<br><br>'+
+        'Pengiriman: '+d.pengiriman+'<br><br>'+
+        'Pembayaran: '+d.pembayaran+'<br>';
+}
   $(document).ready(function(){
-      $('#idTable').DataTable({
+    var dt =  $('#idTable').DataTable({
           'processing': true,
           'serverSide': true,
           'serverMethod': 'post',
           "columnDefs": [
             {
-                "targets": [ 10 ],
+                "targets": [ 7 ],
                 "visible": false,
                 "searchable": false
+                },
+                {
+                "targets": [ 1 ],
+                "orderable": false
                 }
             ],
           'ajax': {
             'url':'<?=base_url()?>backend/Datatable/order'
           },
           'columns': [
+            {
+                "class": "details-control",
+                "orderable": false,
+                "data": null,
+                "defaultContent":""
+            },
             { data: 'id_order'},
             { data: 'nama'},
             { data: 'email'},
-            { data: 'alamat' },
-            { data: 'telp' },
-            { data: 'pengiriman' },
-            { data: 'pembayaran'},
             { data: 'tanggal' },
             { data: 'status' },
             {
               "data": "no",
-                       "aTargets": [10],
+              "orderable": false,
+                       "aTargets": [7],
                        "render": function (data) {
-                           return '<a href="<?php echo site_url('backend/Crud/detail/')?>'+data+'"  class="btn btn-sm btn-success text-white">Detail</a>';
+                           return '<a href="<?php echo site_url('backend/Crud/detail/')?>'+data+'"  class="btn btn-sm btn-primary">Info <i class="icon-info mb-1"></i></a>';
                        }
                    },
             { data: 'no'}
           ]
       });
+
+  // Array to track the ids of the details displayed rows
+    var detailRows = [];
+ 
+    $('#idTable tbody').on( 'click', 'tr td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = dt.row( tr );
+        var idx = $.inArray( tr.attr('id'), detailRows );
+ 
+        if ( row.child.isShown() ) {
+            tr.removeClass( 'details' );
+            row.child.hide();
+ 
+            // Remove from the 'open' array
+            detailRows.splice( idx, 1 );
+        }
+        else {
+            tr.addClass( 'details' );
+            row.child( format( row.data() ) ).show();
+ 
+            // Add to the 'open' array
+            if ( idx === -1 ) {
+                detailRows.push( tr.attr('id') );
+            }
+        }
+    } );
+ 
+    // On each draw, loop over the `detailRows` array and show any child rows
+    dt.on( 'draw', function () {
+        $.each( detailRows, function ( i, id ) {
+            $('#'+id+' td.details-control').trigger( 'click' );
+        } );
+    } );
   });
   </script>

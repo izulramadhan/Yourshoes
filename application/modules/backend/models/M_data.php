@@ -38,15 +38,15 @@ class M_data extends CI_Model{
 		->get()
 		->result();
 	}
-	function get_email($where){
-		return $this->db->from('tbl_pelanggan')
-		->join('tbl_order', 'tbl_pelanggan.id=tbl_order.pelanggan')
+	function detail_service($where){
+		return $this->db->from('tbl_hubungikami')
 		->where($where)
 		->get()
 		->result();
 	}
-	function detail_service($where){
-		return $this->db->from('tbl_hubungikami')
+	function get_email($where){
+		return $this->db->from('tbl_pelanggan')
+		->join('tbl_order', 'tbl_pelanggan.id=tbl_order.pelanggan')
 		->where($where)
 		->get()
 		->result();
@@ -77,7 +77,10 @@ class M_data extends CI_Model{
  
 	function hapus_data($where,$table){
 	 $row = $this->db->where($where)->get('tbl_produk')->row('gambar');
-     unlink('././gambar/product/'.$row);
+	 if ($row=="default.jpg") {
+		}else{	
+     		unlink('././gambar/product/'.$row);
+		}
 		$this->db->where($where);
 		$this->db->delete($table);
 		return true;

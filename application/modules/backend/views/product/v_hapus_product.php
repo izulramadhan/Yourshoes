@@ -21,7 +21,7 @@
                       <div class="card card-primary">
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                          <table class="table table-striped text-nowrap table-responsive">
+                          <table id="idTable" class="table table-striped text-nowrap table-responsive">
                             <font color="#ffffff">
                             <thead class="text-white" style="font-size: 15px;">
                               <tr>
@@ -32,25 +32,12 @@
                                 <th>Kategori</th>
                                 <th>Tgl Hapus</th>
                                 <th>User</th>
+                                <th>ID</th>
                               </tr>
                             </thead>
                             <tbody class="text-white" style="font-size: 14px;">
-                              <?php 
-                                  foreach($products as $u){ 
-                                  ?>
                               <tr>
-                                <td><?php echo ++$start ?></td>
-                                <td><?php echo $u->nama_produk ?></td>
-                                <td>Rp. <?php echo number_format($u->harga,0,",",".");?></td>
-                                <td><?php echo $u->deskripsi ?></td>
-                                <td><?php echo $u->nama_kategori ?></td>
-                                <td><?php echo $u->tgl_hapus ?></td>
-                                <td><?php echo $u->user ?></td>
                               </tr>
-                              <?php } ?>
-                             <div class="mx-auto">
-                              <?php  echo $pagination ?>
-                          </div>
                             </tbody>
                             </font>
                           </table>
@@ -58,10 +45,42 @@
                         <!-- /.card-body -->
                       </div>
                       <!-- /.card -->
-                    </div>\
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
         </div>
+          <!-- Script -->
+  <script type="text/javascript">
+  $(document).ready(function(){
+      $('#idTable').DataTable({
+          'processing': true,
+          'serverSide': true,
+          'serverMethod': 'post',
+          "columnDefs": [
+            {
+                "targets": [ 7 ],
+                "visible": false,
+                "searchable": false
+                }
+            ],
+          'ajax': {
+            'url':'<?=base_url()?>backend/Datatable/prodTerhapus'
+          },
+          'columns': [
+            { data: 'id_produk'},
+            { data: 'nama_produk' },
+            { data: 'harga',
+            render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )
+            },
+            { data: 'deskripsi' },
+            { data: 'nama_kategori' },
+            { data: 'tgl_hapus' },
+            { data: 'user' },
+            { data: 'no'}
+          ]
+      });
+  });
+  </script>

@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             < class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>"><img src="<?php echo base_url()?>gambar/logo.png"></a>
+          <a class="navbar-brand" href="<?php echo base_url()?>frontend/page"><img src="<?php echo base_url()?>gambar/logo.png"></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">

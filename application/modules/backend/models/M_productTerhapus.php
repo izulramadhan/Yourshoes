@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_service extends CI_Model {
+class M_productTerhapus extends CI_Model {
 
   function getData($postData=null){
 
@@ -18,17 +18,16 @@ class M_service extends CI_Model {
       ## Search 
       $searchQuery = "";
       if($searchValue != ''){
-          $searchQuery = " (nama like '%".$searchValue."%' or 
-                email like '%".$searchValue."%' or 
-                hp like '%".$searchValue."%' or 
-                alamat like '%".$searchValue."%' or 
-                pesan like '%".$searchValue."%' ) ";
+          $searchQuery = " (nama_produk like '%".$searchValue."%' or 
+                nama_kategori like '%".$searchValue."%' or 
+                deskripsi like '%".$searchValue."%' ) ";
       }
 
 
       ## Total number of records without filtering
       $this->db->select('count(*) as allcount');
-      $records = $this->db->from('tbl_hubungikami')
+      $records = $this->db->from('hapus_produk')
+      ->join('tbl_kategori', 'hapus_produk.kategori=tbl_kategori.id')
       ->get()
       ->result();
       $totalRecords = $records[0]->allcount;
@@ -37,7 +36,8 @@ class M_service extends CI_Model {
       $this->db->select('count(*) as allcount');
       if($searchQuery != '')
       $this->db->where($searchQuery);
-      $records = $this->db->from('tbl_hubungikami')
+      $records = $this->db->from('hapus_produk')
+      ->join('tbl_kategori', 'hapus_produk.kategori=tbl_kategori.id')
       ->get()
       ->result();
       $totalRecordwithFilter = $records[0]->allcount;
@@ -49,7 +49,8 @@ class M_service extends CI_Model {
       $this->db->where($searchQuery);
       $this->db->order_by($columnName, $columnSortOrder);
       $this->db->limit($rowperpage, $start);
-      $records = $this->db->from('tbl_hubungikami')
+      $records = $this->db->from('hapus_produk')
+      ->join('tbl_kategori', 'hapus_produk.kategori=tbl_kategori.id')
       ->get()
       ->result();
 
@@ -57,16 +58,14 @@ class M_service extends CI_Model {
       foreach($records as $record ){
          
           $data[] = array( 
-              "id"=>++$start,
-              "nama"=>$record->nama,
-              "pesan"=>$record->pesan,
-              "reply"=>$record->reply,
-              "status"=>$record->status,
-              "tanggal"=>$record->tanggal,
-              "email"=>$record->email,
-              "hp"=>$record->hp,
-              "alamat"=>$record->alamat,
-              "no"=>$record->id
+              "id_produk"=>++$start,
+              "nama_produk"=>$record->nama_produk,
+              "harga"=>$record->harga,
+              "deskripsi"=>$record->deskripsi,
+              "nama_kategori"=>$record->nama_kategori,
+              "tgl_hapus"=>$record->tgl_hapus,
+              "user"=>$record->user,
+              "no"=>$record->id_produk
           ); 
       }
 

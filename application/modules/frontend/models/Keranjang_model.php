@@ -52,10 +52,15 @@ class Keranjang_model extends CI_Model {
 		$this->db->insert('tbl_detail_order', $data);
 	}
 
-	function InsertHubungiKami($nama,$email,$hp,$alamat,$pesan,$tanggal) {
+	public function InsertHubungiKami($nama,$email,$hp,$alamat,$pesan,$tanggal) {
 		return $this->db->query("insert into tbl_hubungikami (nama,email,hp,alamat,pesan,tanggal) values('$nama','$email','$hp','$alamat','$pesan','$tanggal')");
 	}
 
+		public function get_product_keyword($keyword){
+			$this->db->like('nama_produk',$keyword);
+        $query  =   $this->db->get('tbl_produk');
+        return $query->result();
+		}
 	 
 
 }

@@ -11,6 +11,7 @@ class Datatable extends CI_Controller {
     $this->load->model('M_customer');
     $this->load->model('M_category');
     $this->load->model('M_service');
+    $this->load->model('M_productTerhapus');
   }
   public function prodList(){
     // POST data
@@ -45,6 +46,13 @@ class Datatable extends CI_Controller {
     $postData = $this->input->post();
     // Get data
     $data = $this->M_service->getData($postData);
+    echo json_encode($data);
+  }
+  public function prodTerhapus(){
+    // POST data
+    $postData = $this->input->post();
+    // Get data
+    $data = $this->M_productTerhapus->getData($postData);
     echo json_encode($data);
   }
 

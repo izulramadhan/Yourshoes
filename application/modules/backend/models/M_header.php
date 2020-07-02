@@ -7,6 +7,7 @@ class M_header extends CI_Model{
         return $query->result_array();
     }
     public function jumlah_order(){   
+      $this->db->where('status', 'Belum Diproses');
     	$query = $this->db->get('tbl_order');
     	if($query->num_rows()>0){
       	return $query->num_rows();
@@ -25,6 +26,7 @@ class M_header extends CI_Model{
     	}
 	}	
 	public function jumlah_hubungikami(){
+    $this->db->where('status', 'Belum Dibalas');
 	 	$query = $this->db->get('tbl_hubungikami');
     	if($query->num_rows()>0){
       	return $query->num_rows();

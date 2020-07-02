@@ -7,6 +7,11 @@ class MY_Controller extends CI_Controller{
  $this->authenticated(); // Panggil fungsi authenticated
  	}
  public function authenticated(){ // Fungsi ini berguna untuk mengecek apakah user sudah login atau belum
+ if($this->input->cookie('authenticated')){
+ 	if ($this->input->cookie('authenticated')=='true') {
+ 	$this->session->userdata('authenticated');
+ 	}
+ }
  if($this->uri->segment(2) != 'Auth' && $this->uri->segment(2) != ''){
  if( ! $this->session->userdata('authenticated')) // Jika tidak ada / artinya belum login
  redirect('Multiuser/Auth'); // Redirect ke halaman login

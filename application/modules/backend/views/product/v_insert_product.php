@@ -55,7 +55,7 @@
                               </div>
                               <div class="form-group">
                             <label for="foto">Photo</label>
-                                 <input type="file" name="berkas" value="<?php echo $u->gambar; ?>"/><br><br>
+                                 <input type="file" name="berkas"/><br><br>
                                   <input class="btn btn-primary" type="submit" value="Tambah Produk" />
                           <?php echo form_close(); ?>
                         </div>

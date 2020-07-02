@@ -31,18 +31,16 @@
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
                           <!-- Table -->
-                          <table id='prodTable' class='table table-striped text-nowrap border-primary'>
+                          <table id='prodTable' class='table-dataTable-compact table-striped text-nowrap border-primary'>
                             <thead class="text-white" style="font-size: 15px;">
                               <tr>
+                                <th></th>
                                 <th>No</th>
-                                <th>Gambar</th>
                                 <th>Nama Produk</th>
-                                <th>Deskripsi</th>
                                 <th>Harga</th>
                                 <th>Nama Kategori</th>
-                                <th>Stok</th>
                                 <th>Option</th>
-                                <th>Id</th>
+                                <th></th>
                               </tr>
                             </thead>
                             <tbody class="text-white" style="font-size: 14px;">
@@ -64,46 +62,84 @@
         </div>
   <!-- Script -->
   <script type="text/javascript">
+     function format ( d ) {
+    return 'Preview: <br><br><img src="<?php echo base_url('gambar/product/')?>'+d.gambar+'" width="120"/><br><br>Deskripsi: '+d.deskripsi+'<br><br>'+
+        'Stok: '+d.stok+'<br><br>';
+}
   $(document).ready(function(){
-      $('#prodTable').DataTable({
+      var dt =  $('#prodTable').DataTable({
           'processing': true,
           'serverSide': true,
           'serverMethod': 'post',
           "columnDefs": [
             {
-                "targets": [ 8 ],
+                "targets": [ 6 ],
                 "visible": false,
                 "searchable": false
+                },
+                {
+                "targets": [ 1 ],
+                "orderable": false
                 }
             ],
           'ajax': {
             'url':'<?=base_url()?>backend/Datatable/prodList'
           },
           'columns': [
-            { data: 'id_produk'},
             {
-                       "data": "gambar",
-                       "aTargets": [2],
-                       "render": function (data) {
-                           return '<img src="<?php echo base_url('gambar/product/')?>'+data+' "width="64"" />';
-                       }
-                   },
+                "class": "details-control",
+                "orderable": false,
+                "data": null,
+                "defaultContent":""
+            },
+            { data: 'id_produk'},
             { data: 'nama_produk' },
-            { data: 'deskripsi' },
             { data: 'harga',
             render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )
             },
             { data: 'nama_kategori' },
-            { data: 'stok' },
             {
               "data": "no",
-                       "aTargets": [8],
+                       "orderable": false,
+                       "aTargets": [6],
                        "render": function (data) {
-                           return '<form action="<?php echo base_url('backend/Crud/hapus')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete</span></a><?php echo form_close(); ?><a href="<?php echo site_url('backend/Crud/edit/')?>'+data+'"><span class="btn btn-sm btn-warning">Edit</span></a>';
+                           return '<div class="d-inline" <form action="<?php echo base_url('backend/Crud/hapus')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete <i class="icon-close mb-1"></i></span></a><?php echo form_close(); ?> || <a href="<?php echo site_url('backend/Crud/edit/')?>'+data+'"><span class="btn btn-sm btn-warning">Edit <i class="icon-padnote mb-1"></i></span></a></div>';
                        }
                    },
             { data: 'no'}
           ]
       });
+        // Array to track the ids of the details displayed rows
+    var detailRows = [];
+ 
+    $('#prodTable tbody').on( 'click', 'tr td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = dt.row( tr );
+        var idx = $.inArray( tr.attr('id'), detailRows );
+ 
+        if ( row.child.isShown() ) {
+            tr.removeClass( 'details' );
+            row.child.hide();
+ 
+            // Remove from the 'open' array
+            detailRows.splice( idx, 1 );
+        }
+        else {
+            tr.addClass( 'details' );
+            row.child( format( row.data() ) ).show();
+ 
+            // Add to the 'open' array
+            if ( idx === -1 ) {
+                detailRows.push( tr.attr('id') );
+            }
+        }
+    } );
+ 
+    // On each draw, loop over the `detailRows` array and show any child rows
+    dt.on( 'draw', function () {
+        $.each( detailRows, function ( i, id ) {
+            $('#'+id+' td.details-control').trigger( 'click' );
+        } );
+    } );
   });
   </script>

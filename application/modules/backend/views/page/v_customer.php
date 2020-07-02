@@ -21,7 +21,7 @@
                       <div class="card card-primary">
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                          <table id="idTable" class="table table-responsive table-striped text-nowrap border-primary">
+                          <table id="idTable" class="table-dataTable-compact table-responsive table-striped text-nowrap border-primary">
                             <thead class="text-white" style="font-size: 15px;">
                               <tr>
                                 <th>No</th>
@@ -60,6 +60,10 @@
                 "targets": [ 5 ],
                 "visible": false,
                 "searchable": false
+                },
+                {
+                "targets": [ 0 ],
+                "orderable": false
                 }
             ],
           'ajax': {
@@ -73,8 +77,9 @@
             {
               "data": "no",
                        "aTargets": [5],
+                       "orderable": false,
                        "render": function (data) {
-                           return '<form action="<?php echo base_url('backend/Crud/hapus_customer')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus_customer/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete</span></a><?php echo form_close(); ?>';
+                           return '<form action="<?php echo base_url('backend/Crud/hapus_customer')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus_customer/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete <i class="icon-close mb-1"></span></a><?php echo form_close(); ?>';
                        }
                    },
             { data: 'no'}

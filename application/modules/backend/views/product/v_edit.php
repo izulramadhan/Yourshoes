@@ -48,6 +48,9 @@
                                 <input type="text" class="form-control" name="harga" value="<?php echo $u->harga ?>">
                               </div>
                               <div class="form-group">
+                                <input type="hidden" class="form-control" name="img" value="<?php echo $u->gambar ?>">
+                              </div>
+                              <div class="form-group">
                                 <label for="foto">Photo</label><br>
                                 <img src="<?php echo base_url('gambar/product/'.$u->gambar) ?>" width="260"/><br><hr>
                                 <input type="file" name="berkas" value="<?php echo $u->gambar ?>"/><br>

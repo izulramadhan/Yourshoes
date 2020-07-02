@@ -31,7 +31,7 @@
                       <div class="card card-primary">
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                          <table id="idTable" class="table table-striped text-nowrap border-primary">
+                          <table id="idTable" class="table-dataTable-compact table-striped text-nowrap border-primary">
                             <thead class="text-white" style="font-size: 15px;">
                               <tr>
                                 <th>No</th>
@@ -73,6 +73,10 @@
                 "targets": [ 7 ],
                 "visible": false,
                 "searchable": false
+                },
+                {
+                "targets": [ 0 ],
+                "orderable": false
                 }
             ],
           'ajax': {
@@ -98,8 +102,9 @@
             {
               "data": "no",
                        "aTargets": [7],
+                       "orderable": false,
                        "render": function (data) {
-                           return '<form action="<?php echo base_url('backend/Crud/hapus')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete</span></a><?php echo form_close(); ?><a href="<?php echo site_url('backend/Crud/edit/')?>'+data+'"><span class="btn btn-sm btn-warning">Edit</span></a>';
+                           return '<div class="d-inline" <form action="<?php echo base_url('backend/Crud/hapus')?>" enctype="multipart/form-data" method="post" accept-charset="utf-8"><a href="<?php echo site_url('backend/Crud/hapus/')?>'+data+'" ><span class="btn btn-sm btn-danger">Delete <i class="icon-close mb-1"></i></span></a><?php echo form_close(); ?> || <a href="<?php echo site_url('backend/Crud/edit/')?>'+data+'"><span class="btn btn-sm btn-warning">Edit <i class="icon-padnote mb-1"></i></span></a></div>';
                        }
                    },
             { data: 'no'}
